@@ -40,7 +40,6 @@ class App extends Component {
       this.setState({
         account: accounts[0]
       })
-      console.log(accounts);
   }
 
   async loadWeb3() {
@@ -56,7 +55,6 @@ class App extends Component {
 
   captureFile = (event) =>{
       event.preventDefault();
-      console.log("file captured");
       const file = event.target.files[0];
       const reader = new window.FileReader();
       reader.readAsArrayBuffer(file);
@@ -69,13 +67,11 @@ class App extends Component {
 
   submitMeme = (event) =>{
       event.preventDefault();
-      console.log("submitting.....");
       const _this = this;
       const file = ipfs.add(this.state.buffer);
       file.then((r)=>{
           this.state.contract.methods.setMemeHash(r.path)
             .send({from:this.state.account}, function(error, trans){
-              console.log("in here");
               _this.setState({
                 memeHash: r.path
               })
@@ -85,7 +81,6 @@ class App extends Component {
   }
 
   render() {
-    console.log(this.state);
     return (
         <div>
           <p>Account: {this.state.account}</p>
