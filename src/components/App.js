@@ -8,7 +8,7 @@ const ipfs = create({ host: 'ipfs.infura.io', port: 5001, protocol: 'https' })
 class App extends Component {
   state = {
     buffer: null,
-    memeHash: null,
+    memeHash: '',
     account: "",
     contract: null
   }
@@ -70,12 +70,13 @@ class App extends Component {
   submitMeme = (event) =>{
       event.preventDefault();
       console.log("submitting.....");
+      const _this = this;
       const file = ipfs.add(this.state.buffer);
       file.then((r)=>{
           this.state.contract.methods.setMemeHash(r.path)
-            .send({from:this.state.account}).then(()=>{
+            .send({from:this.state.account}, function(error, trans){
               console.log("in here");
-              this.setState({
+              _this.setState({
                 memeHash: r.path
               })
           })
